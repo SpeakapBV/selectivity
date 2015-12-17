@@ -71,7 +71,11 @@ var callSuper = Selectivity.inherits(SelectivitySubmenu, SelectivityDropdown, {
                 this.parentMenu._closeSubmenuTimeout = 0;
             }
 
-            this._doHighlight(item);
+            if (options && options.openSubmenu === false) {
+                callSuper(this, 'highlight', item);
+            } else {
+                this._doHighlight(item);
+            }
         }
     },
 
@@ -93,7 +97,7 @@ var callSuper = Selectivity.inherits(SelectivitySubmenu, SelectivityDropdown, {
     selectItem: function(id) {
 
         var item = Selectivity.findNestedById(this.results, id);
-        if (item && !item.submenu) {
+        if (item && (!item.submenu || item.submenu.selectable)) {
             var options = { id: id, item: item };
             if (this.selectivity.triggerEvent('selectivity-selecting', options)) {
                 this.selectivity.triggerEvent('selectivity-selected', options);
@@ -170,6 +174,7 @@ var callSuper = Selectivity.inherits(SelectivitySubmenu, SelectivityDropdown, {
                 var $dropdownEl = this.$el;
 
                 this.submenu = new Dropdown({
+                    highlightFirstItem: !item.submenu.selectable,
                     items: item.submenu.items || null,
                     parentMenu: this,
                     position: item.submenu.positionDropdown || function($el) {

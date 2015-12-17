@@ -413,7 +413,8 @@ $.extend(SelectivityDropdown.prototype, EventDelegator.prototype, {
 
         this.hasMore = options.hasMore;
 
-        if (!options.add || this.loadMoreHighlighted) {
+        if (this.options.highlightFirstItem !== false &&
+            (!options.add || this.loadMoreHighlighted)) {
             this._highlightFirstItem(results);
         }
 
@@ -457,7 +458,7 @@ $.extend(SelectivityDropdown.prototype, EventDelegator.prototype, {
 
         var firstItem = findFirstItem(results);
         if (firstItem) {
-            this.highlight(firstItem);
+            this.highlight(firstItem, { openSubmenu: false });
         } else {
             this.highlightedResult = null;
             this.loadMoreHighlighted = false;
