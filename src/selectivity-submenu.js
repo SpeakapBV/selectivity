@@ -158,6 +158,11 @@ var callSuper = Selectivity.inherits(SelectivitySubmenu, SelectivityDropdown, {
 
         if (item.submenu && !this.submenu) {
             var selectivity = this.selectivity;
+            if (selectivity.options.shouldOpenSubmenu &&
+                selectivity.options.shouldOpenSubmenu() === false) {
+                return;
+            }
+
             var Dropdown = selectivity.options.dropdown || Selectivity.Dropdown;
             if (Dropdown) {
                 var quotedId = Selectivity.quoteCssAttr(item.id);
