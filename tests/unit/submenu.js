@@ -70,7 +70,7 @@ exports.testSearchInSubmenuInSingleSelectInput = DomUtil.createDomTest(
         });
 
         $input.click();
-        test.equal($('.selectivity-result-item').length, 3);
+        test.equal($('.selectivity-result-item').length, 1);
 
         $('.selectivity-result-item[data-item-id="1"]').mouseover();
 
