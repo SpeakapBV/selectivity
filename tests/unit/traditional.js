@@ -36,6 +36,18 @@ exports.testInitializationSingleWithCustomQuery = DomUtil.createDomTest(
     }
 );
 
+exports.testInitializationSingleWithEmptyValue = DomUtil.createDomTest(
+    ['single', 'templates', 'traditional'],
+    { indexResource: 'testcase-traditional-empty-value.html' },
+    function(test, $input) {
+        $input.selectivity();
+
+        test.deepEqual($input.selectivity('data'), { id: '', text: 'Select one' });
+
+        test.equal($input.selectivity('value'), '');
+    }
+);
+
 exports.testInitializationMultiple = DomUtil.createDomTest(
     ['multiple', 'templates', 'traditional'],
     { indexResource: 'testcase-traditional-multiple.html' },
@@ -55,5 +67,59 @@ exports.testInitializationMultiple = DomUtil.createDomTest(
         test.equal($options.length, 2);
         test.equal($options.first().val(), '3');
         test.equal($options.last().val(), '4');
+    }
+);
+
+exports.testSingleTraditionalChangeEvents = DomUtil.createDomTest(
+    ['single', 'templates', 'traditional'],
+    { indexResource: 'testcase-traditional.html' },
+    function(test, $input, $) {
+        var changeEvents = 0;
+        $input.selectivity({
+            query: function() {}
+        });
+
+        $input.on('change', function() {
+            changeEvents++;
+        });
+
+        $('.selectivity-single-select').trigger({
+            type: 'selectivity-selected',
+            item: { id: 1, text: 'foo bar' }
+        });
+
+        test.equal(changeEvents, 1);
+        test.equal($input.val(), '1');
+    }
+);
+
+exports.testMultipeTraditionalChangeEvents = DomUtil.createDomTest(
+    ['multiple', 'templates', 'traditional'],
+    { indexResource: 'testcase-traditional-multiple.html' },
+    function(test, $input, $) {
+        var changeEvents = 0;
+        $input.selectivity({
+            query: function() {}
+        });
+
+        $input.on('change', function() {
+            changeEvents++;
+        });
+
+        $('.selectivity-multiple-input-container').trigger({
+            type: 'selectivity-selected',
+            item: { id: '1', text: 'foo bar' }
+        });
+
+        test.equal(changeEvents, 1);
+        test.deepEqual($input.val(), ['1', '3', '4']);
+
+        $('.selectivity-multiple-input-container').trigger({
+            type: 'selectivity-selected',
+            item: { id: '2', text: 'foo bar' }
+        });
+
+        test.equal(changeEvents, 2);
+        test.deepEqual($input.val(), ['1', '2', '3', '4']);
     }
 );

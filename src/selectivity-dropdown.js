@@ -1,8 +1,7 @@
 'use strict';
 
 var $ = require('jquery');
-
-var debounce = require('./lodash/debounce');
+var debounce = require('lodash/debounce');
 
 var EventDelegator = require('./event-delegator');
 
@@ -73,7 +72,6 @@ function SelectivityDropdown(options) {
 
     this.addToDom();
     this.position();
-    this.setupCloseHandler();
 
     this._suppressMouseWheel();
 
@@ -324,14 +322,6 @@ $.extend(SelectivityDropdown.prototype, EventDelegator.prototype, {
                 this.selectivity.triggerEvent('selectivity-selected', options);
             }
         }
-    },
-
-    /**
-     * Sets up an event handler that will close the dropdown when the Selectivity control loses
-     * focus.
-     */
-    setupCloseHandler: function() {
-
     },
 
     /**

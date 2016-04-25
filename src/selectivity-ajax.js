@@ -1,8 +1,7 @@
 'use strict';
 
 var $ = require('jquery');
-
-var debounce = require('./lodash/debounce');
+var debounce = require('lodash/debounce');
 
 var Selectivity = require('./selectivity-base');
 
@@ -51,7 +50,7 @@ Selectivity.OptionListeners.unshift(function(selectivity, options) {
                         }
 
                         var results = resultsCb(data, offset);
-                        results.results = results.results.map(processItem);
+                        results.results = $.map(results.results, processItem);
                         queryOptions.callback(results);
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
