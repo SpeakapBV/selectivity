@@ -400,8 +400,14 @@ $.extend(SelectivityDropdown.prototype, EventDelegator.prototype, {
 
         this.hasMore = options.hasMore;
 
-        if (this.options.highlightFirstItem !== false &&
-            (!options.add || this.loadMoreHighlighted)) {
+        var value = this.selectivity.value();
+        if (value && $.type(value) !== 'array') {
+            var item = Selectivity.findNestedById(results, value);
+            if (item) {
+                this.highlight(item);
+            }
+        } else if (this.options.highlightFirstItem !== false &&
+                   (!options.add || this.loadMoreHighlighted)) {
             this._highlightFirstItem(results);
         }
 
